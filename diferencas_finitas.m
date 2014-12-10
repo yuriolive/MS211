@@ -1,8 +1,8 @@
-function [w x] = diferencas_finitas
+function [x w] = diferencas_finitas
     a = 1;
     b = 2;
     w_start = 0;
-    w_final = 2;
+    w_final = log(256);
     h = 0.05;
     n = -1 + (b - a)/h;
 
@@ -19,10 +19,10 @@ function [w x] = diferencas_finitas
     for i = 1:n
         w(i) = w_start + i * h * (w_final - w_start)/(b - a);
     end
-    
+
     iteracoes = 0;
 
-    while(iteracoes < 3)
+    while(iteracoes < 100)
         % Calculo dos valores da primeira linha da matriz
         k = a + h;
         t = (w(2) - w_start)/(2*h);
@@ -31,13 +31,15 @@ function [w x] = diferencas_finitas
         d_v(1) = -(2*w(1) - w(2) - w_start + h*h*f(k, w(1), t));
         
         % Calculo dos valores dos valores das linhas 2 ate n-1 da matriz
-        for i = 2:(n-1)
+        i = 2;
+        while(i <= (n-1))
             k = a + i*h;
             t = (w(i+1) - w(i-1))/(2*h);
             a_v(i) = 2 + h*h*fy(k, w(i), t);
             b_v(i) = -1 + h*fy_linha(k, w(i), t)/2;
             c_v(i) = -1 - h*fy_linha(k, w(i), t)/2;
-            d_v(i) = -(2*w(i) - w(i) - w(i-1) + h*h*f(k, w(i), t));
+            d_v(i) = -(2*w(i) - w(i+1) - w(i-1) + h*h*f(k, w(i), t));
+            i = i + 1;
         end
 
         % Calculo dos valores da linha n da matriz
@@ -51,9 +53,11 @@ function [w x] = diferencas_finitas
         l(1) = a_v(1);
         u(1) = b_v(1)/a_v(1);
 
-        for i = 2:(n-1)
+        i = 2;
+        while(i <= (n-1))
             l(i) = a_v(i) - c_v(i)*u(i-1);
             u(i) = b_v(i)/l(i);
+            i = i + 1;
         end
 
         l(n) = a_v(n) - c_v(n)*u(n-1);
