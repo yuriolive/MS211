@@ -1,3 +1,3 @@
 function res = fy_linha(k, w, t)
-	res = x^(-3)*(w)
+	res = 2*k^(-3)*t;
 end
