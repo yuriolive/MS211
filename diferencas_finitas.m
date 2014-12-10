@@ -1,4 +1,4 @@
-function [x w] = diferencas_finitas
+function [w] = diferencas_finitas
     a = 1;
     b = 2;
     w_start = 0;
@@ -22,7 +22,7 @@ function [x w] = diferencas_finitas
 
     iteracoes = 0;
 
-    while(iteracoes < 100)
+    while(iteracoes < 10)
         % Calculo dos valores da primeira linha da matriz
         k = a + h;
         t = (w(2) - w_start)/(2*h);
@@ -77,10 +77,6 @@ function [x w] = diferencas_finitas
             t(i) = z(i) - u(i)*t(i+1);
             w(i) = w(i) + t(i);
             i = i-1;
-        end
-
-        for i = 1:n
-            x(i) = a + i*h;
         end
 
         iteracoes = iteracoes + 1;
